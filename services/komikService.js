@@ -1,8 +1,8 @@
 async function createKomik(database, komikData) {
-    const{ title, author, imageType, imageName, imageData } = komikData;
+    const { title, description, author, imageType, imageName, imageData } = komikData;
 
-    if (!title || !description || !author ) {
-        throw new Error('Title, description, dan authors wajib diisi.');
+    if (!title || !description || !author) {
+        throw new Error('Title, description, dan author wajib diisi.');
     }
     
     const newKomik = await database.Komik.create({
@@ -11,7 +11,7 @@ async function createKomik(database, komikData) {
         author,
         imageType: imageType || null,
         imageName: imageName || null,
-        ImageData: ImageData || null,
+        ImageData: imageData || null,
     });
 
     return newKomik;
@@ -20,7 +20,7 @@ async function createKomik(database, komikData) {
 async function getAllKomiks(database) {
     const komiks = await database.Komik.findAll();
 
-    return komiks.map(k =>{
+    return komiks.map(k => {
         if (k.imageData) {
             k.imageData = k.imageData.toString('base64');
         }
@@ -39,3 +39,9 @@ async function getKomikById(database, id) {
 
     return komik;
 }
+
+module.exports = {
+    createKomik,
+    getAllKomiks,
+    getKomikById,
+};
